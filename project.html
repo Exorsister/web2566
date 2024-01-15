@@ -5,36 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
     <title>Project</title>
 </head>
 
 <body>
     <a-scene>
         <a-assets>
-            <img id="room" src="work2/Panorama.png">
-            <img id="me" src="work2/me.png">
-            <a-asset-item id="Sofa-modal" src="work2/Sofa.obj"></a-asset-item>
-            <a-asset-item id="Sofa-material" src="work2/Sofa.mtl"></a-asset-item>
+            <img id="forest" src="/project/forest2.png">
+            <img id="Test" src="/project/Panorama.png">
+            <a-asset-item id="Dinosaur1" response-type="arraybuffer" src="/project/Dinosaur/tyranno.glb"></a-asset-item>
         </a-assets>
 
-        <a-text value="Work 2" position="-1.35672 1.5 -2.2"
-            animation="property: position; to: 0 1.5 -2.2; dur: 2000; easing: linear; loop: false" text=""></a-text>
-        <a-text value="643020422-2 Suwinai Sangkeaw" position="-5 1 -2"
-            animation="property: position; to: -1 1 -2.2; dur: 8000; easing: linear; loop: false"></a-text>
+        <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+        
+        <a-entity id="dinosaur" gltf-model="#Dinosaur1" position="0 0 -4" scale="0.5 0.5 0.5" rotation="0 -90 0" animation-mixer="clip:Idle2; loop:1"></a-entity>
 
-        <a-sky color="#ECFFFF" src="#room" radius="40"></a-sky>
-        <a-camera>
-            <a-cursor></a-cursor>
-        </a-camera>
-        <a-box position="-0.07501 2.61341 -5" width="1" height="1"
-            animation="property: position; to: 0 1 -5; dur: 2000; easing: linear"
-            animation__2="property: rotation; to: 0 360 0; dur: 5000; loop: NaN" src="#me" material="" geometry=""
-            rotation="0 19.689 0"></a-box>
-
-        <a-obj-model src="work2/Sofa.obj" mtl="work2/Sofa.mtl" position="0 0 -7.02942" scale="0.017 0.014 0.017"
-            material="" obj-model="" rotation="-89.6209123987731 -92.59742814447773 0"></a-obj-model>
+        <script>
+            var dinosaurEntity = document.querySelector("#dinosaur");
+            dinosaurEntity.addEventListener("animationcomplete", function (event) {
+                if (event.detail.name === "Idle2") {
+                    dinosaurEntity.setAttribute("animation-mixer", "clip:Roar");
+                }
+            });
+        </script>
     </a-scene>
-
 </body>
 
 </html>
