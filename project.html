@@ -18,17 +18,11 @@
         </a-assets>
 
         <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+        <a-entity id="camera" camera look-controls wasd-controls="acceleration: 300" position="0 0.01 0" rotation="0 0 0"></a-entity>
         
-        <a-entity id="dinosaur" gltf-model="#Dinosaur1" position="0 0 -4" scale="0.5 0.5 0.5" rotation="0 -90 0" animation-mixer="clip:Idle2; loop:1"></a-entity>
+        <a-entity id="dinosaur" gltf-model="#Dinosaur1" position="0 0 -4" scale="0.5 0.5 0.5" rotation="0 -90 0"
+            animation-mixer="clip:Idle2"></a-entity>
 
-        <script>
-            var dinosaurEntity = document.querySelector("#dinosaur");
-            dinosaurEntity.addEventListener("animationcomplete", function (event) {
-                if (event.detail.name === "Idle2") {
-                    dinosaurEntity.setAttribute("animation-mixer", "clip:Roar");
-                }
-            });
-        </script>
     </a-scene>
 </body>
 
