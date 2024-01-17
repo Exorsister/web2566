@@ -15,6 +15,7 @@
                     <v-card-text>
                         <template v-if="state==0">
                             <v-btn @click="shuffle()">เริ่มเล่น</v-btn>
+                            <v-btn @click="MainWork()">กลับหน้าหลัก</v-btn>
                         </template>
                         <template v-if="state==1">
                             <v-row>
@@ -98,6 +99,9 @@
                     if (this.cards_count == 0) {
                         this.state = 2;
                     }
+                },
+                MainWork() {
+                    window.location.href = "index.html";
                 },
             },
         });
