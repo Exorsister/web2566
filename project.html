@@ -12,11 +12,18 @@
 <body>
     <a-scene>
         <a-assets>
+            <a-mixin id="checkpoint"></a-mixin>
+            <a-mixin id="checkpoint-hovered" color="#6CEEB5"></a-mixin>
             <a-asset-item id="Dinosaur1" response-type="arraybuffer" src="/project/Dinosaur/tyranno.glb"></a-asset-item>
         </a-assets>
 
-        <a-entity id="camera" camera look-controls wasd-controls="acceleration: 300" position="0 0.01 0"
-            rotation="0 0 0"></a-entity>
+        <!-- Player -->
+        <a-entity id="rig" movement-controls="constrainToNavMesh: true;
+                                   controls: checkpoint, gamepad, trackpad, keyboard, nipple;" position="0 0 0">
+            <a-entity camera position="0 1.6 0" look-controls="pointerLockEnabled: true">
+                <a-cursor></a-cursor>
+            </a-entity>
+        </a-entity>
 
         <a-entity id="dinosaur" gltf-model="#Dinosaur1" position="0 0 -4" scale="0.5 0.5 0.5" rotation="0 -90 0"
             animation-mixer="clip: Idle2; loop: once; clampWhenFinished: true;"></a-entity>
