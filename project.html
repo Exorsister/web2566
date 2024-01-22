@@ -1,34 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-    <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
-    <title>Project</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, maximum-scale=1">
+  <title>Jurassic Park</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+  <script src="./animation-controls.js"></script>
+  <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
 </head>
 
 <body>
-    <a-scene>
-        <a-assets>
-            <a-mixin id="checkpoint"></a-mixin>
-            <a-mixin id="checkpoint-hovered" color="#6CEEB5"></a-mixin>
-            <a-asset-item id="Dinosaur1" response-type="arraybuffer" src="/project/Dinosaur/tyranno.glb"></a-asset-item>
-        </a-assets>
 
-        <!-- Player -->
-        <a-entity id="rig" movement-controls="constrainToNavMesh: true;
-                                   controls: checkpoint, gamepad, trackpad, keyboard, nipple;" position="0 0 0">
-            <a-entity camera position="0 1.6 0" look-controls="pointerLockEnabled: true">
-                <a-cursor></a-cursor>
-            </a-entity>
-        </a-entity>
+  <a-scene environment="preset: forest; lighting: point; lightPosition: -5 10 0;">
+    <a-assets>
+      <a-asset-item id="Dinosaur1" response-type="arraybuffer" src="/project/Dinosaur/tyranno.glb"></a-asset-item>
+    </a-assets>
 
-        <a-entity id="dinosaur" gltf-model="#Dinosaur1" position="0 0 -4" scale="0.5 0.5 0.5" rotation="0 -90 0"
-            animation-mixer="clip: Idle2; loop: once; clampWhenFinished: true;"></a-entity>
-    </a-scene>
+    <a-entity id="rig" position="0 0 10" movement-controls="constrainToNavMesh: true;
+                           controls: checkpoint, gamepad, trackpad, keyboard, nipple;" position="-7 0 21">
+      <a-entity camera position="0 1.6 0" look-controls="pointerLockEnabled: true">
+        <a-cursor></a-cursor>
+      </a-entity>
+    </a-entity>
+
+    <a-entity id="dinosaur" gltf-model="#Dinosaur1" position="0 0 -4" scale="2 2 2" rotation="0 -90 0"
+      animation-mixer="clip: Idle2;"></a-entity>
+
+    <a-entity id="RoarBox" position="0 10.2 -3.5" scale="0.05 0.05 0.05"
+      geometry="primitive: box; width: 4; height: 4; depth: 4;" material="src: .\project101flukky\1.png"
+      onclick="changeAnimation('Roar');">
+    </a-entity>
+
+
+    <a-entity id="AttackBox" position="1 10.2 -3.5" scale="0.05 0.05 0.05"
+      geometry="primitive: box; width: 4; height: 4; depth: 4;" material="color: #33FF66; opacity: 0.5"
+      onclick="changeAnimation('Attack');">
+    </a-entity>
+
+
+    <a-entity id="FallBox" position="2 10.2 -3.5" scale="0.05 0.05 0.05"
+      geometry="primitive: box; width: 4; height: 4; depth: 4;" material="color: #33FF66; opacity: 0.5"
+      onclick="changeAnimation('Fall');">
+    </a-entity>
+
+
+    <a-entity id="HeadButtBox" position="3 10.2 -3.5" scale="0.05 0.05 0.05"
+      geometry="primitive: box; width: 4; height: 4; depth: 4;" material="color: #33FF66; opacity: 0.5"
+      onclick="changeAnimation('HeadButt');">
+    </a-entity>
+
+    <a-entity id="WalkBox" position="-2 10.2 -3.5" scale="0.05 0.05 0.05"
+      geometry="primitive: box; width: 4; height: 4; depth: 4;" material="color: #33FF66; opacity: 0.5"
+      onclick="changeAnimation('Walk');">
+    </a-entity>
+
+    <a-entity id="Idle2box" position="-1 10.2 -3.5" scale="0.05 0.05 0.05"
+      geometry="primitive: box; width: 4; height: 4; depth: 4;" material="color: #33FF66; opacity: 0.5"
+      onclick="changeAnimation('Idle2');">
+    </a-entity>
+
+    <a-entity id="Spawn" checkpoint="offset: 0 0 0;" position="0 0 12" scale="0.7 0.7 0.7"
+      geometry="primitive: box; width: 4; height: 4; depth: 4;" material="color: #33FF66; opacity: 0.5" levitate>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      // รอให้ aframe-extras เสร็จสิ้นการโหลด GLB
+      document.querySelector('a-scene').addEventListener('loaded', function () {
+        // หลังจากโหลดเสร็จแล้วจึงทำการตั้งค่า animation-mixer
+        var dinosaurEntity = document.getElementById("dinosaur");
+        var animationMixer = dinosaurEntity.components["animation-mixer"];
+        if (animationMixer && animationMixer.data) {
+          // ตรวจสอบชื่อ animation clip ที่มีอยู่ในไฟล์ GLB และตั้งค่า
+          var availableClips = animationMixer.data.clips;
+          if (availableClips && availableClips.length > 0) {
+            animationMixer.data.clip = availableClips[0].name; // ให้ใช้ clip แรก
+          }
+        }
+      });
+    });
+
+    // เพิ่มฟังก์ชันเปลี่ยน animation
+    function changeAnimation(newAnimation) {
+      var dinosaurEntity = document.getElementById("dinosaur");
+      var animationMixer = dinosaurEntity.components["animation-mixer"];
+
+      if (animationMixer && animationMixer.data) {
+        animationMixer.data.clip = newAnimation;
+
+        // หากต้องการเล่น animation ทันทีหลังจากการเปลี่ยน clip
+        animationMixer.stopAction(); // หยุดการเล่น animation ที่กำลังเล่น
+        animationMixer.playAction(); // เริ่มเล่น animation ที่กำหนด
+      }
+    }
+  </script>
 </body>
 
 </html>
