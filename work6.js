@@ -1,5 +1,6 @@
 const RB = ReactBootstrap;
 const { Alert, Card, Button, Table } = ReactBootstrap;
+
 const firebaseConfig = {
     apiKey: "AIzaSyAKh5oTxEpZqBIyiEHpoFrZkyIIHYu-Zzs",
     authDomain: "web2566-3666e.firebaseapp.com",
@@ -9,8 +10,10 @@ const firebaseConfig = {
     appId: "1:64257554198:web:b3b00497f884aee38b4237",
     measurementId: "G-RTCF36DSFG"
 };
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+
 db.collection("students").get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
         console.log(`${doc.id} =>`, doc.data());
